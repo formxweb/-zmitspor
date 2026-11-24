@@ -4,6 +4,8 @@ name: ZAP Tarama
 # Başka bir siteyi taramak için aşağıdaki "target" satırını değiştir.
 on:
   workflow_dispatch:
+  push:
+    branches: [zap-tarama]
 
 permissions:
   contents: read
