@@ -1,11 +1,12 @@
 name: ZAP Tarama
 
-# Elle çalıştırmak için: Actions -> ZAP Tarama -> Run workflow
+# Ne zaman çalışır?
+#  1) Vercel siteyi canlıya (Production) her aldığında otomatik.
+#  2) Elle: Actions -> ZAP Tarama -> Run workflow
 # Başka bir siteyi taramak için aşağıdaki "target" satırını değiştir.
 on:
   workflow_dispatch:
-  push:
-    branches: [zap-tarama]
+  deployment_status:
 
 permissions:
   contents: read
@@ -13,9 +14,17 @@ permissions:
 
 jobs:
   zap:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
+      - name: Canlı adresin güncellenmesini bekle
+        if: github.event_name == 'deployment_status'
+        run: sleep 30
 
       - name: ZAP Baseline (pasif tarama)
         uses: zaproxy/action-baseline@v0.15.0

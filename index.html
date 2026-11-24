@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600;6..96,700&display=swap" rel="stylesheet" />
 <style>
-/* ===== AYAR: Sadece sayfa sonundaki CONFIG bolumunu degistir. ===== */
+/* ===== AYAR: Sadece assets/config.js dosyasini degistir. ===== */
 :root{
   --accent:#e11d2a; --accent-d:#b51522;
   --ink:#141414; --muted:#6a6a6a;
@@ -254,7 +254,7 @@ footer{background:var(--ink);color:#fff;padding:62px 0 28px;margin-top:40px}
   <div class="wrap nav">
     <a href="#" class="brand"><span class="logo" id="logoLetter">İ</span><span><div class="nm" id="brandName">İZMİT SPOR</div><div class="sb" id="brandSub">Giyim · 41</div></span></a>
     <nav class="nav-links"><a href="#urunler">Ürünler</a><a href="#nasil">Nasıl Sipariş</a><a href="#sss">S.S.S.</a><a href="#iletisim">İletişim</a></nav>
-    <button class="cart-btn" onclick="openCart()">Sepet <span class="cart-count" id="cartCount">0</span></button>
+    <button class="cart-btn" data-action="open-cart">Sepet <span class="cart-count" id="cartCount">0</span></button>
   </div>
 </header>
 
@@ -301,218 +301,45 @@ footer{background:var(--ink);color:#fff;padding:62px 0 28px;margin-top:40px}
 <footer id="iletisim"><div class="wrap">
   <div class="foot-grid">
     <div><div class="logo" id="logoLetter2">İ</div><div class="fnm" id="footName"></div><p id="footAbout"></p></div>
-    <div class="foot-col"><h4>Mağaza</h4><a href="#urunler">Ürünler</a><a href="#kampanya">Kampanyalar</a><a onclick="openCart()">Sepetim</a></div>
-    <div class="foot-col"><h4>Yardım</h4><a onclick="info('teslimat')">Teslimat</a><a onclick="info('iade')">İade & Değişim</a><a onclick="info('mesafeli')">Mesafeli Satış</a><a onclick="info('gizlilik')">Gizlilik / KVKK</a></div>
-    <div class="foot-col"><h4>İletişim</h4><a id="footPhone" href="#"></a><a id="footWa" href="#" target="_blank">WhatsApp</a><a id="footIg" href="#" target="_blank">Instagram</a><div class="pays" id="pays" style="margin-top:14px"></div></div>
+    <div class="foot-col"><h4>Mağaza</h4><a href="#urunler">Ürünler</a><a href="#kampanya">Kampanyalar</a><a href="#" data-action="open-cart">Sepetim</a></div>
+    <div class="foot-col"><h4>Yardım</h4><a href="#" data-action="info" data-key="teslimat">Teslimat</a><a href="#" data-action="info" data-key="iade">İade & Değişim</a><a href="#" data-action="info" data-key="mesafeli">Mesafeli Satış</a><a href="#" data-action="info" data-key="gizlilik">Gizlilik / KVKK</a></div>
+    <div class="foot-col"><h4>İletişim</h4><a id="footPhone" href="#"></a><a id="footWa" href="#" target="_blank" rel="noopener">WhatsApp</a><a id="footIg" href="#" target="_blank" rel="noopener">Instagram</a><div class="pays" id="pays" style="margin-top:14px"></div></div>
   </div>
   <div class="foot-bottom"><span id="footCopy"></span><span>Güvenli alışveriş · İzmit, Kocaeli</span></div>
 </div></footer>
 
-<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="overlay" id="overlay" data-action="close"></div>
 
-<div class="modal" id="modal"><button class="x" onclick="closeAll()">✕</button><div class="modal-grid">
+<div class="modal" id="modal"><button class="x" data-action="close" aria-label="Kapat">✕</button><div class="modal-grid">
   <div class="modal-img" id="mImg"></div>
   <div class="modal-body">
     <div class="ct upper" id="mCat"></div><h3 id="mName"></h3><div class="mp" id="mPrice"></div>
     <div class="desc" id="mDesc"></div><ul class="spec" id="mSpec"></ul>
     <div class="lbl">Beden</div><div class="sizes" id="mSizes"></div>
-    <button class="btn gold" style="width:100%" onclick="addFromModal()">Sepete Ekle</button>
+    <button class="btn gold" style="width:100%" data-action="add-modal">Sepete Ekle</button>
   </div>
 </div></div>
 
-<div class="modal" id="infoModal" style="width:min(560px,94vw)"><button class="x" onclick="closeAll()">✕</button>
+<div class="modal" id="infoModal" style="width:min(560px,94vw)"><button class="x" data-action="close" aria-label="Kapat">✕</button>
   <div style="padding:34px"><h3 id="infoTitle" style="font-size:1.6rem;margin-bottom:14px"></h3><div id="infoBody" style="font-size:.9rem;color:var(--muted);line-height:1.8"></div></div>
 </div>
 
 <div class="drawer" id="drawer">
-  <div class="drawer-head"><h3>Sepetim</h3><button class="x" style="position:static;background:var(--soft)" onclick="closeAll()">✕</button></div>
+  <div class="drawer-head"><h3>Sepetim</h3><button class="x" style="position:static;background:var(--soft)" data-action="close" aria-label="Kapat">✕</button></div>
   <div class="drawer-items" id="cartItems"></div>
   <div class="drawer-foot" id="cartFoot" style="display:none">
     <div class="sumrow"><span>Ara toplam</span><span id="subtotal"></span></div>
     <div class="sumrow"><span>Kargo</span><span id="shipVal"></span></div>
     <div class="sumrow total"><span>Toplam</span><span id="total"></span></div>
-    <button class="wfull primary" onclick="openCheckout()">Siparişi Tamamla</button>
+    <button class="wfull primary" data-action="checkout">Siparişi Tamamla</button>
   </div>
 </div>
 
-<div class="modal" id="checkout" style="width:min(880px,96vw)"><button class="x" onclick="closeAll()">✕</button><div id="coContent"></div></div>
+<div class="modal" id="checkout" style="width:min(880px,96vw)"><button class="x" data-action="close" aria-label="Kapat">✕</button><div id="coContent"></div></div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-/* ============================================================
-   AYARLAR — HER MUSTERI ICIN SADECE BURAYI DEGISTIR
-   • whatsapp : ulke kodlu, sadece rakam (90...)
-   • bank     : Havale/EFT icin banka + IBAN + hesap sahibi
-   • products : img = "assets/xxx.jpg" ya da bos (sik yer tutucu)
-   ============================================================ */
-const CONFIG = {
-  brand:"İZMİT SPOR", brandSub:"Giyim · 41", fullName:"İZMİT SPOR GİYİM 41",
-  accent:"#e11d2a",
-  heroEyebrow:"İzmit · Kocaeli",
-  heroTitle:"İzmit'in en uygun<br>giyim adresi.",
-  heroText:"Güncel modeller, uygun fiyat. Online sipariş ver, güvenle kapına gelsin.",
-  heroImg:"assets/u-02.jpg",
-  heroMeta:[["26B+","Takipçi"],["1-3 gün","Kargo"],["%100","Güvenli"]],
-  bannerEy:"Fırsat", bannerTitle:"Yeni sezon kampanyası", bannerText:"Seçili ürünlerde uygun fiyat fırsatı. Stoklarla sınırlı.",
-  about:"İzmit'in en uygun giyim mağazası. Güncel modeller için takipte kalın. Sipariş ve sorularınız için WhatsApp'tan ulaşın.",
-  whatsapp:"905387199516", instagram:"izmitspor.41", phone:"0538 719 95 16",
-  currency:"₺",
-  shipping:{fee:49, freeOver:750},
-  bank:{name:"Banka Adı", iban:"TR00 0000 0000 0000 0000 0000 00", holder:"İzmit Spor Giyim 41"},
-  categories:["Tümü","Sweatshirt","Kazak"],
-  products:[
-    {id:1,name:"Basic Sweatshirt",category:"Sweatshirt",price:349,img:"assets/u-01.jpg",sizes:["S","M","L","XL"],desc:"Şardonlu iç dokulu, sıcak tutan düz kesim sweatshirt. Günlük kullanıma ideal.",fabric:"Pamuk / Polyester",fit:"Regular"},
-    {id:2,name:"Örme Triko Kazak",category:"Kazak",price:549,img:"assets/u-02.jpg",sizes:["S","M","L","XL"],desc:"Burgu örgü detaylı, yumuşak dokulu triko kazak. Şık ve rahat.",fabric:"Akrilik / Pamuk",fit:"Regular"},
-    {id:3,name:"Oversize Kapüşonlu",category:"Sweatshirt",price:449,img:"assets/u-03.jpg",sizes:["S","M","L","XL"],desc:"Salaş kesim kapüşonlu sweatshirt. Geniş kalıp, sokak stili.",fabric:"Pamuk / Polyester",fit:"Oversize"},
-    {id:4,name:"Yarım Fermuar Sweatshirt",category:"Sweatshirt",price:399,img:"assets/u-04.jpg",sizes:["S","M","L","XL"],desc:"Polo yaka, yarım fermuar detaylı sweatshirt. Spor şık kombinler için.",fabric:"Pamuk / Polyester",fit:"Regular"},
-    {id:5,name:"Fermuarlı Triko Kazak",category:"Kazak",price:579,img:"assets/u-05.jpg",sizes:["S","M","L","XL"],desc:"Dik yaka yarım fermuarlı burgu triko. Kışlık, sıcak tutar.",fabric:"Akrilik / Pamuk",fit:"Regular"}
-  ]
-};
-
-/* ---------- MOTOR ---------- */
-const money=n=>CONFIG.currency+n.toLocaleString("tr-TR");
-const grad=i=>{const g=[["#3f3f3f","#161616"],["#4a4a4a","#1c1c1c"],["#363636","#131313"],["#444444","#1a1a1a"],["#3a3a3a","#151515"],["#4e4e4e","#1e1e1e"],["#333333","#121212"],["#474747","#181818"]];const c=g[i%g.length];return`linear-gradient(150deg,${c[0]},${c[1]})`;};
-let cart=[]; try{const s=localStorage.getItem("izmit_cart");if(s)cart=JSON.parse(s)||[];}catch(e){}
-const save=()=>{try{localStorage.setItem("izmit_cart",JSON.stringify(cart));}catch(e){}};
-
-document.documentElement.style.setProperty("--accent",CONFIG.accent);
-const L=CONFIG.brand.charAt(0).toUpperCase();
-["logoLetter","logoLetter2"].forEach(id=>document.getElementById(id).textContent=L);
-brandName.textContent=CONFIG.brand; brandSub.textContent=CONFIG.brandSub;
-document.title=CONFIG.fullName+" — Online Mağaza";
-heroEyebrow.textContent=CONFIG.heroEyebrow; heroTitle.innerHTML=CONFIG.heroTitle; heroText.textContent=CONFIG.heroText;
-bannerEy.textContent=CONFIG.bannerEy; bannerTitle.textContent=CONFIG.bannerTitle; bannerText.textContent=CONFIG.bannerText;
-footName.textContent=CONFIG.fullName; footAbout.textContent=CONFIG.about;
-footCopy.textContent="© "+new Date().getFullYear()+" "+CONFIG.fullName;
-footPhone.textContent=CONFIG.phone; footPhone.href="tel:"+CONFIG.phone.replace(/\s/g,"");
-footWa.href="https://wa.me/"+CONFIG.whatsapp; footIg.href="https://instagram.com/"+CONFIG.instagram;
-heroVisual.innerHTML=CONFIG.heroImg?`<img src="${CONFIG.heroImg}" alt="">`:`<div class="hv-ph"><div class="l">${CONFIG.brand}</div></div>`;
-heroMeta.innerHTML=CONFIG.heroMeta.map(m=>`<div class="m"><div class="n">${m[0]}</div><div class="l">${m[1]}</div></div>`).join("");
-document.getElementById("pays").innerHTML=["Havale/EFT","Kapıda Ödeme","Kredi Kartı"].map(p=>`<span>${p}</span>`).join("");
-const annTxt=`Türkiye'nin her yerine kargo &nbsp;·&nbsp; <b>${money(CONFIG.shipping.freeOver)}</b> üzeri kargo bedava &nbsp;·&nbsp; Güvenli ödeme &nbsp;·&nbsp; Kapıda ödeme`;
-document.getElementById("track").innerHTML=`<span>${annTxt}</span><span>${annTxt}</span>`;
-
-const trustData=[["⛟","Hızlı Kargo","1-3 iş günü teslimat"],["↺","Kolay İade","14 gün içinde değişim"],["🔒","Güvenli Ödeme","Havale, kapıda, kart"],["✆","WhatsApp Destek",CONFIG.phone]];
-document.getElementById("trust").innerHTML=trustData.map(t=>`<div class="t"><span class="ic">${t[0]}</span><div><div class="tt">${t[1]}</div><div class="ts">${t[2]}</div></div></div>`).join("");
-
-const FAQ=[
-  ["Kargo ne zaman gelir?","Siparişiniz onaylandıktan sonra 1-3 iş günü içinde kargoya verilir. "+money(CONFIG.shipping.freeOver)+" ve üzeri alışverişlerde kargo ücretsizdir."],
-  ["Hangi ödeme yöntemleri var?","Havale/EFT ve kapıda ödeme (nakit veya kart) ile ödeyebilirsiniz. Online kredi kartı ödemesi yakında eklenecektir."],
-  ["İade ve değişim nasıl yapılır?","Ürünü teslim aldıktan sonra 14 gün içinde, kullanılmamış ve etiketli olmak şartıyla iade veya beden değişimi yapabilirsiniz."],
-  ["Beden seçiminde yardım alabilir miyim?","Tabii. WhatsApp'tan bize yazın, ürünün ölçülerini ve beden önerimizi paylaşalım."]
-];
-document.getElementById("faqWrap").innerHTML=FAQ.map(f=>`<details class="faq"><summary>${f[0]}<span class="ar">＋</span></summary><div class="a">${f[1]}</div></details>`).join("");
-
-function fallback(p){return `<div class="fallback" style="background:${grad(p.id)}"><span class="fn">${p.name}</span><span class="fc">${p.category}</span></div>`;}
-function visual(p){return p.img?`<img src="${p.img}" alt="${p.name}">`:fallback(p);}
-
-let activeCat="Tümü";
-const filtersEl=document.getElementById("filters");
-CONFIG.categories.forEach(c=>{const b=document.createElement("button");b.className="chip"+(c==="Tümü"?" active":"");b.textContent=c;b.onclick=()=>{activeCat=c;[...filtersEl.children].forEach(x=>x.classList.remove("active"));b.classList.add("active");renderGrid();};filtersEl.appendChild(b);});
-
-const gridEl=document.getElementById("grid");
-function renderGrid(){
-  const list=CONFIG.products.filter(p=>activeCat==="Tümü"||p.category===activeCat);
-  gridEl.innerHTML=list.map(p=>`
-    <div class="card"><div class="ph" onclick="openQuick(${p.id})">${visual(p)}<span class="tag">${p.category}</span><div class="quick">Hızlı Bak</div></div>
-      <div class="info"><div class="nm">${p.name}</div><div class="ct">${p.category}</div><div class="price">${money(p.price)}</div>
-      <button class="addbtn" onclick="quickAdd(${p.id})">Sepete Ekle</button></div></div>`).join("");
-  requestAnimationFrame(()=>{[...gridEl.querySelectorAll(".card")].forEach((c,i)=>setTimeout(()=>c.classList.add("in"),i*45));});
-}
-renderGrid();
-
-function quickAdd(id){const p=CONFIG.products.find(x=>x.id===id);addToCart(p,p.sizes[0]);afterAdd(p.name);}
-let modalProduct=null,modalSize=null;
-function openQuick(id){
-  const p=CONFIG.products.find(x=>x.id===id);modalProduct=p;modalSize=p.sizes[0];
-  mImg.innerHTML=visual(p);mCat.textContent=p.category;mName.textContent=p.name;mPrice.textContent=money(p.price);mDesc.textContent=p.desc||"";
-  mSpec.innerHTML=`<li><span class="k">Kumaş</span><span>${p.fabric||"-"}</span></li><li><span class="k">Kalıp</span><span>${p.fit||"-"}</span></li><li><span class="k">Kategori</span><span>${p.category}</span></li>`;
-  mSizes.innerHTML=p.sizes.map((s,i)=>`<button class="size${i===0?" active":""}" onclick="pickSize(this,'${s}')">${s}</button>`).join("");
-  open2("overlay","modal");
-}
-function pickSize(el,s){modalSize=s;[...mSizes.children].forEach(x=>x.classList.remove("active"));el.classList.add("active");}
-function addFromModal(){addToCart(modalProduct,modalSize);afterAdd(modalProduct.name+" ("+modalSize+")");}
-
-function addToCart(p,size){const key=p.id+"-"+size;const ex=cart.find(x=>x.key===key);if(ex)ex.qty++;else cart.push({key,id:p.id,name:p.name,price:p.price,size,img:p.img,qty:1});save();renderCart();}
-/* sepete ekleyince sepeti ac */
-function afterAdd(label){document.getElementById("modal").classList.remove("open");toast((label||"Ürün")+" sepete eklendi");openCart();}
-function changeQty(key,d){const it=cart.find(x=>x.key===key);if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(x=>x.key!==key);save();renderCart();}
-function removeItem(key){cart=cart.filter(x=>x.key!==key);save();renderCart();}
-function totals(){const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);const ship=(sub>0&&sub<CONFIG.shipping.freeOver)?CONFIG.shipping.fee:0;return{sub,ship,total:sub+ship};}
-function renderCart(){
-  document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0);
-  const box=document.getElementById("cartItems"),foot=document.getElementById("cartFoot");
-  if(!cart.length){box.innerHTML='<div class="empty">Sepetiniz boş.<br>Koleksiyondan beğendiğiniz ürünleri ekleyin.</div>';foot.style.display="none";return;}
-  foot.style.display="block";
-  box.innerHTML=cart.map(i=>{const v=i.img?`<img src="${i.img}">`:`<div class="fallback" style="background:${grad(i.id)}">${i.name.split(" ")[0]}</div>`;
-    return `<div class="ci"><div class="cim">${v}</div><div class="cd"><div class="nm">${i.name}</div><div class="meta">Beden: ${i.size}</div>
-    <div class="qty"><button onclick="changeQty('${i.key}',-1)">−</button><span>${i.qty}</span><button onclick="changeQty('${i.key}',1)">+</button></div></div>
-    <div><div class="cp">${money(i.price*i.qty)}</div><button class="rm" onclick="removeItem('${i.key}')">Kaldır</button></div></div>`;}).join("");
-  const t=totals();subtotal.textContent=money(t.sub);shipVal.textContent=t.ship===0?"Bedava":money(t.ship);total.textContent=money(t.total);
-}
-
-let payMethod="havale";
-function openCheckout(){if(!cart.length)return;renderCheckout();open2("overlay","checkout");document.getElementById("drawer").classList.remove("open");}
-function renderCheckout(){
-  const t=totals(),b=CONFIG.bank;
-  const items=cart.map(i=>`<div class="co-line"><span>${i.name} <span class="q">(${i.size}) ×${i.qty}</span></span><span>${money(i.price*i.qty)}</span></div>`).join("");
-  document.getElementById("coContent").innerHTML=`<div class="co-grid">
-    <div class="co-form"><h3>Sipariş Bilgileri</h3><div class="sub">Bilgileri doldurun, ödeme yöntemini seçin.</div>
-      <div class="two"><div class="field" id="f-ad"><label>Ad Soyad</label><input id="c-ad" placeholder="Adınız Soyadınız"></div>
-      <div class="field" id="f-tel"><label>Telefon</label><input id="c-tel" placeholder="05xx xxx xx xx" inputmode="tel"></div></div>
-      <div class="two"><div class="field" id="f-il"><label>İl</label><input id="c-il" placeholder="Kocaeli"></div>
-      <div class="field" id="f-ilce"><label>İlçe</label><input id="c-ilce" placeholder="İzmit"></div></div>
-      <div class="field" id="f-adres"><label>Açık Adres</label><textarea id="c-adres" rows="2" placeholder="Mahalle, sokak, bina/daire no"></textarea></div>
-      <div class="field"><label>Sipariş Notu (isteğe bağlı)</label><input id="c-not" placeholder="Beden/renk notu..."></div>
-      <div class="lbl" style="margin:18px 0 0">Ödeme Yöntemi</div>
-      <div class="pay-opts" id="payOpts">
-        <div class="pay ${payMethod==='havale'?'sel':''}" onclick="selPay('havale')"><div class="ph"><span class="dot"></span><div><div class="pt">Havale / EFT</div><div class="pd">IBAN'a ödeme, onay sonrası kargo</div></div></div><div class="extra">Banka: <b>${b.name}</b><br>IBAN: <b>${b.iban}</b><br>Hesap: <b>${b.holder}</b><br>Açıklamaya ad-soyad yazın.</div></div>
-        <div class="pay ${payMethod==='kapida'?'sel':''}" onclick="selPay('kapida')"><div class="ph"><span class="dot"></span><div><div class="pt">Kapıda Ödeme</div><div class="pd">Teslimatta nakit veya kart</div></div></div><div class="extra">Ürünü teslim alırken kuryeye ödersiniz.</div></div>
-        <div class="pay disabled"><div class="ph"><span class="dot"></span><div><div class="pt">Kredi / Banka Kartı</div><div class="pd">Online güvenli ödeme</div></div><span class="soon">Yakında</span></div></div>
-      </div>
-    </div>
-    <div class="co-summary"><h4>Sipariş Özeti</h4>${items}
-      <div class="co-line" style="border:none;padding-top:14px"><span class="q">Ara toplam</span><span>${money(t.sub)}</span></div>
-      <div class="co-line" style="border:none;padding:4px 0"><span class="q">Kargo</span><span>${t.ship===0?"Bedava":money(t.ship)}</span></div>
-      <div class="sumrow total" style="margin-top:12px"><span>Toplam</span><span>${money(t.total)}</span></div>
-      <button class="wfull primary" style="margin-top:10px" onclick="confirmOrder()">Siparişi Onayla</button>
-      <div class="secure">🔒 Bilgileriniz yalnızca siparişiniz için kullanılır</div>
-    </div></div>`;
-}
-function selPay(m){payMethod=m;[...document.querySelectorAll('#payOpts .pay:not(.disabled)')].forEach(e=>e.classList.remove('sel'));event.currentTarget.classList.add('sel');}
-function val(id){return (document.getElementById(id).value||"").trim();}
-function confirmOrder(){
-  const req=[["c-ad","f-ad"],["c-tel","f-tel"],["c-il","f-il"],["c-ilce","f-ilce"],["c-adres","f-adres"]];let ok=true;
-  req.forEach(([i,f])=>{const el=document.getElementById(f);if(!val(i)){el.classList.add("err");ok=false;}else el.classList.remove("err");});
-  if(!ok){toast("Lütfen zorunlu alanları doldurun");return;}
-  const t=totals(),payTxt=payMethod==='havale'?'Havale/EFT':'Kapıda Ödeme';
-  let msg=`*YENİ SİPARİŞ — ${CONFIG.fullName}*%0A%0A*Ad:* ${val('c-ad')}%0A*Telefon:* ${val('c-tel')}%0A*Adres:* ${val('c-adres')}, ${val('c-ilce')}/${val('c-il')}%0A`;
-  if(val('c-not'))msg+=`*Not:* ${val('c-not')}%0A`;
-  msg+=`%0A*Ürünler:*%0A`;cart.forEach(i=>{msg+=`• ${i.name} (${i.size}) ×${i.qty} — ${money(i.price*i.qty)}%0A`;});
-  msg+=`%0AKargo: ${t.ship===0?'Bedava':money(t.ship)}%0A*Toplam: ${money(t.total)}*%0A*Ödeme: ${payTxt}*`;
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`,"_blank");
-  const ono="#"+Math.floor(100000+Math.random()*900000);
-  document.getElementById("coContent").innerHTML=`<div class="co-success"><div class="ok">✓</div><h3>Siparişiniz Alındı</h3><div class="ono">Sipariş No: ${ono}</div>
-    <p>Siparişiniz WhatsApp üzerinden tarafımıza iletildi. ${payMethod==='havale'?'Havale/EFT bilgileri mesajda yer alıyor; ödemeniz onaylanınca kargonuz hazırlanır.':'Siparişiniz onaylanınca en kısa sürede kargoya verilir.'}</p>
-    <button class="btn gold" style="margin-top:18px" onclick="closeAll()">Alışverişe Devam Et</button></div>`;
-  cart=[];save();renderCart();
-}
-
-const INFO={
-  teslimat:["Teslimat","Siparişleriniz onay sonrası 1-3 iş günü içinde kargoya verilir. "+money(CONFIG.shipping.freeOver)+" ve üzeri kargo ücretsizdir. (Örnek metin — kendi koşullarınıza göre düzenleyin.)"],
-  iade:["İade & Değişim","Teslimdan sonra 14 gün içinde, kullanılmamış ve etiketli ürünlerde iade/değişim yapılır. (Örnek metin.)"],
-  mesafeli:["Mesafeli Satış Sözleşmesi","Satıcı bilgileri, teslimat ve cayma hakkı koşulları bu alanda yer alır. (Örnek metin — yasal metninizi ekleyin.)"],
-  gizlilik:["Gizlilik / KVKK","Kişisel verileriniz yalnızca siparişiniz için kullanılır, üçüncü kişilerle paylaşılmaz. (Örnek metin — KVKK metninizi ekleyin.)"]
-};
-function info(k){const d=INFO[k];document.getElementById("infoTitle").textContent=d[0];document.getElementById("infoBody").textContent=d[1];open2("overlay","infoModal");}
-
-function open2(a,b){document.getElementById(a).classList.add("open");document.getElementById(b).classList.add("open");}
-function openCart(){open2("overlay","drawer");}
-function closeAll(){document.querySelectorAll(".open").forEach(e=>e.classList.remove("open"));}
-let tTimer;function toast(m){const el=document.getElementById("toast");el.textContent=m;el.classList.add("show");clearTimeout(tTimer);tTimer=setTimeout(()=>el.classList.remove("show"),2000);}
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll();});
-renderCart();
-</script>
+<script src="assets/config.js" defer></script>
+<script src="assets/app.js" defer></script>
 </body>
 </html>
