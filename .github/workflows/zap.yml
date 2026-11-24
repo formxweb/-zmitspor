@@ -1,0 +1,22 @@
+name: ZAP Tarama
+
+# Elle çalıştırmak için: Actions -> ZAP Tarama -> Run workflow
+# Başka bir siteyi taramak için aşağıdaki "target" satırını değiştir.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  zap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: ZAP Baseline (pasif tarama)
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: 'https://izmitspor.vercel.app'
+          issue_title: 'ZAP Tarama Raporu'
